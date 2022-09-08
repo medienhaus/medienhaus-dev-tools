@@ -1,21 +1,19 @@
 <img src="./public/favicon.svg" width="70" />
 
-### medienhaus/
+### matrix leave tool/
 
-Customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
+Dev tool to leave every space or room with a given name. 
+
+based on the customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
 
 [Website](https://medienhaus.dev/) — [Twitter](https://twitter.com/medienhaus_)
 
 <br>
 
-# medienhaus-frontend
+### Deployement as static website
 
-This repository contains the code for the **medienhaus/** React application, which is designed to intuitively introduce all participants to the paradigm of federated communication through the modern technology our platform is built around.
-
-The application itself is written in JavaScript, we're using the Next.js framework. Documentation can be found at [https://nextjs.org/docs](https://nextjs.org/docs).
-
-## Development
-
+clone git repository and run `npm run buld`.
+This will create a folder called 'out' with the static website
 ### Installation
 
 #### `npm install`
