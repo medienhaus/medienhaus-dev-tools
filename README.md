@@ -1,11 +1,11 @@
 <img src="./public/favicon.svg" width="70" />
 
-### matrix leave tool/
+### matrix maintenance tool 🔧
 
 Dev tool for matrix rooms and spaces.
  
- /leave lets you leave every space or room with a given name. 
- /space event lets you add a state event with a given name to a given room.
+` /leave` lets you leave every space or room with a given name. <br>
+` /space` event lets you add a state event with a given name to a given room. <br>
 
 based on the customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
 
@@ -13,9 +13,9 @@ based on the customizable modular free and open-source environment for decentral
 
 <br>
 
-### Deployement as static website
+### Deployment as static website
 
-clone git repository and run `npm run buld`.
+clone git repository and run `npm run build`.
 This will create a folder called 'out' with the static website
 ### Installation
 
