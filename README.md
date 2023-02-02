@@ -2,7 +2,10 @@
 
 ### matrix leave tool/
 
-Dev tool to leave every space or room with a given name. 
+Dev tool for matrix rooms and spaces.
+ 
+ /leave lets you leave every space or room with a given name. 
+ /space event lets you add a state event with a given name to a given room.
 
 based on the customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
 
