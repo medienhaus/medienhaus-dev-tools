@@ -41,7 +41,8 @@ export default function Navigation({ closeNavigation }) {
                 <li><Link href="/logout">/logout</Link></li>
             </List>
             <List>
-                <li><Link href="/">/leave tool</Link></li>
+                <li><Link href="/leave">/leave tool</Link></li>
+                <li><Link href="/stateEvent">/Add State Event</Link></li>
             </List>
         </>
     );
