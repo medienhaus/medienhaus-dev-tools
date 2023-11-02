@@ -135,7 +135,6 @@ export default function Default({ children }) {
                 </Header>
                 <Nav open={navigationOpen}>
                     <NavigationMenu closeNavigation={() => { setNavigationOpen(false); }} />
-                    <LanguageChooserWrapper><LanguageChooser /></LanguageChooserWrapper>
                 </Nav>
                 <Main>{ children }</Main>
                 <Footer>
