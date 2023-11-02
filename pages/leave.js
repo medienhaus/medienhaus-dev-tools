@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { useAuth } from '../lib/Auth';
 import { useMatrix } from '../lib/Matrix';
+import { handleMatrixRateLimit } from './Utils';
 
 export default function Leave() {
     const [roomName, setRoomName] = useState('');
@@ -13,13 +14,19 @@ export default function Leave() {
     const matrix = useMatrix(auth.getAuthenticationProvider('matrix'));
     const matrixClient = auth.getAuthenticationProvider('matrix').getMatrixClient();
 
+    const leaveMatrixRoom = (roomId) => {
+        return matrixClient.leave(roomId)
+            .catch(error => handleMatrixRateLimit(error, () => leaveMatrixRoom(roomId))
+                .catch(error => console.log(error.message)));
+    };
+
     const handleClick = async () => {
         setNumberOfDeletedRooms(0);
         setDeleting(true);
         if (selectedRoomType === 'all' || selectedRoomType === 'rooms') {
             for (const room of matrix.rooms.values()) {
                 if (room.name !== roomName) continue;
-                matrixClient.leave(room.roomId);
+                await leaveMatrixRoom(room.roomId);
                 setNumberOfDeletedRooms(prevState => prevState + 1);
                 await new Promise(r => setTimeout(r, delay));
             }
@@ -27,13 +34,14 @@ export default function Leave() {
         if (selectedRoomType === 'all' || selectedRoomType === 'spaces') {
             for (const space of matrix.spaces.values()) {
                 if (space.name !== roomName) continue;
-                matrixClient.leave(space.roomId);
+                await leaveMatrixRoom(space.roomId);
                 setNumberOfDeletedRooms(prevState => prevState + 1);
                 await new Promise(r => setTimeout(r, delay));
             }
         }
         setDeleting(false);
     };
+
     return (
         <form onSubmit={(e) => { e.preventDefault(); handleClick(); }}>
 
