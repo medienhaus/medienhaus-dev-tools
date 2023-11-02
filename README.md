@@ -23,6 +23,7 @@ The Create Structure Route is expecting a json file as an array of objects with 
 - type – String
 - parentNames – Array of Strings
 - persons – Array of Objects
+
 -- name – String
 -- mail – String
 
