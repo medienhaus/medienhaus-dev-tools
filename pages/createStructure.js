@@ -6,6 +6,7 @@
 
 import styled from 'styled-components';
 import React, { useState, useRef } from 'react';
+import { Parser } from '@json2csv/plainjs';
 
 import { useAuth } from '../lib/Auth';
 import { handleMatrixRateLimit } from './Utils';
@@ -108,8 +109,11 @@ export default function CreateStructure() {
         setIsGenerating(false);
     };
 
-    // Function to download the generated data as a JSON file
-    const downloadFile = () => {
+    /**
+     * Downloads the data as a JSON file with the specified format.
+     * @function
+     */
+    const downloadFileAsJson = () => {
         const fileName = 'structure-export-'+ Date.now().toString();
         const json = JSON.stringify(generatedData.map(entry => {
             return {
@@ -121,12 +125,48 @@ export default function CreateStructure() {
                 type: entry.type,
             };
         }), null, 2);
-        const blob = new Blob([json], { type: 'application/json' });
+
+        executeDownload(json, 'json', fileName);
+    };
+
+    /**
+     * Downloads the data as a CSV file with the specified format.
+     * @function
+     */
+    const downloadFileAsCsv = () => {
+        const fileName = 'onboarding-export-'+ Date.now().toString();
+        const csvData = [];
+        generatedData.forEach(entry => {
+            entry?.persons.forEach(person => {
+                csvData.push({ id: entry.id, email: person.mail });
+            });
+        });
+
+        try {
+            const opts = {};
+            const parser = new Parser(opts);
+            const csv = parser.parse(csvData);
+
+            executeDownload(csv, 'csv', fileName);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    /**
+     * Executes the download of data in the specified format and file name.
+     * @function
+     * @param {string} data - The data to be downloaded.
+     * @param {string} type - The format/type of the file (e.g., 'json', 'csv').
+     * @param {string} fileName - The desired name for the downloaded file.
+     */
+    const executeDownload = (data, type, fileName) => {
+        const blob = new Blob([data], { type: 'application/'+type });
         const href = URL.createObjectURL(blob);
 
         const link = document.createElement('a');
         link.href = href;
-        link.download = fileName + '.json';
+        link.download = fileName + '.'+type;
         document.body.appendChild(link);
         link.click();
 
@@ -243,7 +283,7 @@ export default function CreateStructure() {
         <>
             <ProcessStep>
                 <h3>0. upload file</h3>
-                <button className="button-upload" onClick={handleUpload} disabled={isGenerating}>Upload json</button>
+                <button onClick={handleUpload} disabled={isGenerating}>Upload json</button>
                 <input accept=".json,application/json"
                     type="file"
                     onChange={handleChange}
@@ -254,15 +294,18 @@ export default function CreateStructure() {
 
             { validData && <ProcessStep>
                 <h3>1. about</h3>
-                <button disabled={isGenerating || generatedData} className="button-upload" onClick={handleGenerate}> { isGenerating ? generatingStatus : 'Generate' }</button>
+                <button disabled={isGenerating || generatedData} onClick={handleGenerate}> { isGenerating ? generatingStatus : 'Generate' }</button>
                 <p><span>Filename: </span>{ structureFile ? structureFile?.name : '' }</p>
                 <p>this would generate <Highlight>{ structureInputData ? structureInputData.length : '' } </Highlight>[matrix] spaces</p>
             </ProcessStep> }
 
             { generatedData && <ProcessStep>
                 <h3>2. report</h3>
-                <button className="button-upload" onClick={downloadFile}>
+                <button onClick={downloadFileAsJson}>
                     Export detailed report
+                </button>
+                <button onClick={downloadFileAsCsv}>
+                    Export csv for 'matrix-email-onboarding' tool
                 </button>
                 <p><span>Generated matrix spaces: </span><Highlight>{ generatedData ? generatedData.length : '' }</Highlight></p>
                 <p><span>Generated Root Id: </span><Highlight>{ generatedData[0].id ? generatedData[0].id : '' }</Highlight></p>
