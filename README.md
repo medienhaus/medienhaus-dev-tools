@@ -18,14 +18,13 @@ based on the customizable modular free and open-source environment for decentral
 ### create Structure
 
 The Create Structure Route is expecting a json file as an array of objects with following keys : 
-- name – String
-- template – String
-- type – String
-- parentNames – Array of Strings
-- persons – Array of Objects
-
--- name – String
--- mail – String
+* name – String
+* template – String
+* type – String
+* parentNames – Array of Strings
+* persons – Array of Objects
+    * name – String
+    * mail – String
 
 
 example: 
