@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import React, { useState, useRef } from 'react';
 
 import { useAuth } from '../lib/Auth';
+import { handleMatrixRateLimit } from './Utils';
 
 const Highlight = styled.span`
   color: var(--color-hi);
@@ -43,9 +44,8 @@ export default function CreateStructure() {
      * Handles the file upload action by programmatically triggering a click event on the hidden file input element.
      *
      * @function
-     * @param {Event} event - The event object associated with the upload action.
      */
-    const handleUpload = (event) => {
+    const handleUpload = () => {
         hiddenFileInput.current.click();
     };
 
@@ -93,11 +93,16 @@ export default function CreateStructure() {
         let data = [];
         for (const entry of structureInputData) {
             const space = { ...entry };
-            space.id = await createMatrixSpace(entry);
+            const createSpace = await createMatrixSpace(entry)
+                .catch(error => {
+                    return handleMatrixRateLimit(error, () => createMatrixSpace(entry));
+                });
+            space.id = createSpace.room_id;
+
             setGeneratingStatus(data.length + '/' + (structureInputData.length-1)*2);
             data.push(space);
         }
-        data = await assign(data);
+        data = await assignParentToChildren(data);
 
         setGeneratedData(data);
         setIsGenerating(false);
@@ -130,13 +135,21 @@ export default function CreateStructure() {
     };
 
     // Function to assign parents and children relationships
-    const assign = async (data) => {
+    const assignParentToChildren = async (data) => {
         let processCounter = 0;
         for (const primiary of data) {
             primiary.parents = [];
             for (const primiaryParent of primiary.parentNames) {
-                for (const parent of data.filter(ele => ele.name.trim().replace(' ', '') === primiaryParent.trim().replace(' ', ''))) {
-                    const resp = await auth.getAuthenticationProvider('matrix').addSpaceChild(parent.id, primiary.id);
+                for (const parent of data
+                    .filter(ele => ele.name.trim().replace(' ', '') === primiaryParent.trim().replace(' ', ''))) {
+                    const addSpaceChild = async () => {
+                        await auth.getAuthenticationProvider('matrix').addSpaceChild(parent.id, primiary.id)
+                            .catch(error => {
+                                return handleMatrixRateLimit(error, () => addSpaceChild());
+                            });
+                    };
+                    await addSpaceChild();
+                    // safety timeout since synapse sometimess messes up otherwise.
                     await new Promise(r => setTimeout(r, 30));
                     primiary.parents.push(parent.id);
                 }
@@ -145,11 +158,9 @@ export default function CreateStructure() {
             setGeneratingStatus((data.length + processCounter) + '/' + (structureInputData.length-1)*2);
         }
 
-        console.log(data);
         data.forEach(entry => {
             entry.children = [];
             data.forEach(potentialChild => {
-                console.log(potentialChild);
                 if (potentialChild.id !== entry.id) {
                     if (potentialChild.parents.includes(entry.id)) {
                         entry.children.push(potentialChild.id);
@@ -165,10 +176,10 @@ export default function CreateStructure() {
      * Function to create a Matrix space based on provided data.
      * @function
      * @param {Object} data - The data used to create the Matrix space.
-     * @returns {Promise<string>} A Promise that resolves with the room ID of the created Matrix space.
+     * @returns {Promise<Object>} A Promise that resolves with the room object of the created Matrix space.
      */
     const createMatrixSpace = async (data) => {
-        const opts = (type, template, name, history) => {
+        const opts = (type, template, name) => {
             return {
                 preset: 'public_chat',
                 power_level_content_override: {
@@ -220,13 +231,12 @@ export default function CreateStructure() {
                 visibility: 'private', // visibility is private even for public spaces.
             };
         };
-        const space = await matrixClient.createRoom(opts(
+        return await matrixClient.createRoom(opts(
             data.type ? data.type : 'context',
             data.template,
             data.name,
             'world_readable',
-        )).catch(console.log);
-        return space?.room_id;
+        ));
     };
 
     return (
@@ -252,7 +262,7 @@ export default function CreateStructure() {
             { generatedData && <ProcessStep>
                 <h3>2. report</h3>
                 <button className="button-upload" onClick={downloadFile}>
-                Export detailed report
+                    Export detailed report
                 </button>
                 <p><span>Generated matrix spaces: </span><Highlight>{ generatedData ? generatedData.length : '' }</Highlight></p>
                 <p><span>Generated Root Id: </span><Highlight>{ generatedData[0].id ? generatedData[0].id : '' }</Highlight></p>
