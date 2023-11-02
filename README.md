@@ -10,7 +10,7 @@ Dev tool for matrix rooms and spaces.
 
 based on the customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
 
-[Website](https://medienhaus.dev/) — [Twitter](https://twitter.com/medienhaus_)
+[Website](https://medienhaus.dev/) — [Mastodon](https://chaos.social/@medienhaus)
 
 <br>
 
