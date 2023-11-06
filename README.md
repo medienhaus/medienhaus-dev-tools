@@ -15,28 +15,7 @@ based on the customizable modular free and open-source environment for decentral
 <br>
 
 
-## CLI tools
 
-### createStructure CLI Tool
-
-### Usage
-
-1. Clone or download the repository.
-2. Install Node.js.
-3. Run the tool with your input data, access token, Matrix server URL, and homeserver name.
-
-```bash
-node ./cli/createStructure.js -f ./examples/structure.example.json -t <yourAccessToken> -b <https://yourMatrixServer.tld> -s <yourHomeserverName>
-```
-
-4. The tool will create the nested matrix spaces based on the input data.
-5. The output JSON can be used for further usage.
-
-For help, use:
-
-```bash
-node ./cli/createStructure.js -h
-```
 
 
 ## static nextjs react frontfaceing interface. 
@@ -179,3 +158,27 @@ example:
 
 
 <br>
+
+
+## CLI tools
+
+### createStructure CLI Tool
+
+### Usage
+
+1. Clone or download the repository.
+2. Install Node.js.
+3. Run the tool with your input data, access token, Matrix server URL, and homeserver name.
+
+```bash
+node ./cli/createStructure.js -f ./examples/structure.example.json -t <yourAccessToken> -b <https://yourMatrixServer.tld> -s <yourHomeserverName>
+```
+
+4. The tool will create the nested matrix spaces based on the input data.
+5. The output JSON can be used for further usage.
+
+For help, use:
+
+```bash
+node ./cli/createStructure.js -h
+```
