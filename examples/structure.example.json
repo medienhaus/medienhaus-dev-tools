@@ -1,0 +1,58 @@
+[
+  {
+    "name": "root structure element",
+    "template": "root-structure",
+    "type": "context",
+    "parentNames": [
+      ""
+    ],
+    "persons": [
+      {
+        "name": "some name",
+        "mail": "some@medienhaus.dev"
+      }
+    ]
+  },
+  {
+    "name": "another structure element",
+    "template": "structure-element",
+    "contextType": "context",
+    "parentNames": [
+      "root structure element"
+    ],
+    "persons": [
+      {
+        "name": "another name",
+        "mail": "another@medienhaus.dev"
+      }
+    ]
+  },
+  {
+    "name": "yet another structure element",
+    "template": "structure-element",
+    "contextType": "context",
+    "parentNames": [
+      "root structure element"
+    ],
+    "persons": [
+      {
+        "name": "yet another name",
+        "mail": "yet-another@medienhaus.dev"
+      }
+    ]
+  },
+  {
+    "name": "and another structure element",
+    "template": "structure-element",
+    "contextType": "context",
+    "parentNames": [
+      "yet another structure element"
+    ],
+    "persons": [
+      {
+        "name": "and another name",
+        "mail": "and-another@medienhaus.dev"
+      }
+    ]
+  }
+]
