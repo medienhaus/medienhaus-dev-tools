@@ -56,5 +56,6 @@
         "prefer-double"
       ]
     }
-  }
+  },
+  "type":"module"
 }
