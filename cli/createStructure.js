@@ -5,13 +5,23 @@ const fs = require('fs');
 main();
 
 /**
+ * Removes all trailing slashes from a string, if present.
+ *
+ * @param {string} string - The URL string to be checked and modified.
+ * @returns {string} - The modified URL string without trailing slashes.
+ */
+function removeTrailingSlash(string) {
+    return string.replace(/\/+$/, '');
+}
+
+/**
  * The main function that orchestrates the creation of Matrix spaces based on input data.
  */
 async function main() {
     // Parse command-line arguments
     const filePath = process.argv.findIndex((i) => i === '-f') > 0 ? process.argv[process.argv.findIndex((i) => i === '-f')+1] : null;
     const token = process.argv.findIndex((i) => i === '-t') > 0 ? process.argv[process.argv.findIndex((i) => i === '-t')+1] : null;
-    const baseurl = process.argv.findIndex((i) => i === '-b') > 0 ? process.argv[process.argv.findIndex((i) => i === '-b')+1] : null;
+    const baseurl = process.argv.findIndex((i) => i === '-b') > 0 ? removeTrailingSlash(process.argv[process.argv.findIndex((i) => i === '-b')+1]) : null;
     const homeserver = process.argv.findIndex((i) => i === '-s') > 0 ? process.argv[process.argv.findIndex((i) => i === '-s')+1] : null;
     const help = process.argv.findIndex((i) => i === '-h') > 0;
 
