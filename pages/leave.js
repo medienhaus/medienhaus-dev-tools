@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { useAuth } from '../lib/Auth';
 import { useMatrix } from '../lib/Matrix';
-import { handleMatrixRateLimit } from './Utils';
+import { handleMatrixRateLimit } from '../components/Utils';
 
 export default function Leave() {
     const [roomName, setRoomName] = useState('');

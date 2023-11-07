@@ -1,108 +1,66 @@
 <img src="./public/favicon.svg" width="70" />
 
-### matrix maintenance tool 🔧
+# matrix maintenance tool 🔧
 
 Dev tool for matrix rooms and spaces.
- 
-` /leave` lets you leave every space or room with a given name. <br>
-` /space` event lets you add a state event with a given name to a given room. <br>
-` /createStructure` lets you create a nested matrix spaces tree based on a json file <br>
 
-based on the customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
+`/leave` lets you leave every space or room with a given name. <br>
+`/space` event lets you add a state event with a given name to a given room. <br>
+`/createStructure` lets you create a nested matrix spaces tree based on a json file <br>
+
+Based on the customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
 
 [Website](https://medienhaus.dev/) — [Mastodon](https://chaos.social/@medienhaus)
 
 <br>
 
-
-### create Structure
-
-The Create Structure Route is expecting a json file as an array of objects with following keys : 
-* name – String
-* template – String
-* type – String
-* parentNames – Array of Strings
-* persons – Array of Objects
-    * name – String
-    * mail – String
-
-
-example: 
-
-```
-[
-  {
-    "name": "Rootname",
-    "template": "root",
-    "type": "context",
-    "parentNames": [
-      ""
-    ],
-    "persons": [
-      {
-        "name": "Name name",
-        "mail": "name@name.tld"
-      }
-    ]
-  },
-  {
-    "name": "Some sub entry",
-    "template": "sub",
-    "type": "context",
-    "parentNames": [
-      "Rootname"
-    ],
-    "persons": [
-      {
-        "name": "other name",
-        "mail": "other@name.tld"
-      }
-    ],
-
-  }
-]
-```
-
-
-<br>
+## Static Next.js React front-facing interface
 
 ### Deployment as static website
 
-clone git repository and run `npm run build`.
+Clone git repository and run `npm run build`.
+<br>
 This will create a folder called 'out' with the static website
+
 ### Installation
 
 #### `npm install`
 
-Installs all of the application's dependencies.
+Installs all of the application’s dependencies.
 
 ### Configuration
 
 Configuration happens in the `next.config.js` file.
 
-### Available Scripts
+### Available scripts
 
 In the project directory, you can run:
 
 #### `npm run dev`
 
-Runs the application in the development mode.<br />
+Runs the application in the development mode.
+<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
+The page will reload if you make edits.
+<br>
 You will also see any lint errors in the console.
 
 #### `npm run export`
 
-Builds a production-ready version of the application and exports it to the `out` directory. The build is minified and the filenames include the hashes.
+Builds a production-ready version of the application and exports it to the `out` directory.
+<br>
+The build is minified and the filenames include the hashes.
 
 ### Notes
 
-When wrapping a [Link](https://nextjs.org/docs/api-reference/next/link) from `next/link` within a styled-component, the [as](https://styled-components.com/docs/api#as-polymorphic-prop) prop provided by `styled` will collide with the Link's `as` prop and cause styled-components to throw an `Invalid tag` error. To avoid this, you can either use the recommended [forwardedAs](https://styled-components.com/docs/api#forwardedas-prop) prop from styled-components or use a different named prop to pass to a `styled` Link.
+When wrapping a [`<Link>`](https://nextjs.org/docs/api-reference/next/link) from `next/link` within a styled-component, the [`as`](https://styled-components.com/docs/api#as-polymorphic-prop) prop provided by `styled` will collide with the Link's `as` prop and cause styled-components to throw an `"Invalid tag"` error. To avoid this, you can either use the recommended [`forwardedAs`](https://styled-components.com/docs/api#forwardedas-prop) prop from styled-components or use a different named prop to pass to a `styled` Link.
 
 <details>
+
 <summary>Click to expand workaround example</summary>
-<br />
+
+<br>
 
 **components/StyledLink.js**
 
@@ -146,3 +104,74 @@ export default () => (
 ```
 
 </details>
+
+### create Structure
+
+The Create Structure Route is expecting a json file as an array of objects with following keys :
+* name – String
+* template – String
+* type – String
+* parentNames – Array of Strings
+* persons – Array of Objects
+    * name – String
+    * mail – String
+
+Example:
+
+```
+[
+  {
+    "name": "root context name",
+    "template": "root",
+    "type": "context",
+    "parentNames": [
+      ""
+    ],
+    "persons": [
+      {
+        "name": "Firstname Lastname",
+        "mail": "firstname-lastname@example.org"
+      }
+    ]
+  },
+  {
+    "name": "sub context name",
+    "template": "sub",
+    "type": "context",
+    "parentNames": [
+      "root context name"
+    ],
+    "persons": [
+      {
+        "name": "Some-Other Name",
+        "mail": "some-other-name@example.org"
+      }
+    ]
+  }
+]
+```
+
+<br>
+
+## CLI Tools
+
+### `createStructure` CLI Tool
+
+### Usage
+
+1. Clone or download the repository.
+2. Install Node.js.
+3. Run the tool with your input data, access token, Matrix server URL, and homeserver name.
+
+```bash
+node ./cli/createStructure.js -f ./examples/structure.example.json -t <yourAccessToken> -b <https://yourMatrixServer.tld> -s <yourHomeserverName>
+```
+
+4. The tool will create the nested matrix spaces based on the input data.
+5. The output JSON can be used for further usage.
+
+For help, use:
+
+```bash
+node ./cli/createStructure.js -h
+```

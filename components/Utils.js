@@ -9,7 +9,7 @@
  *
  * @throws {Error} - Throws an error if `error` is falsy or does not have an `httpStatus` property.
  */
-export const handleMatrixRateLimit = async (error, retryFunction) => {
+export async function handleMatrixRateLimit(error, retryFunction) {
     // Handle other errors
     if (error.httpStatus !== 429) throw new Error(error.data.error || 'Something went wrong. Please try again.');
     // Handle rate limiting with retry_after_ms
@@ -20,4 +20,4 @@ export const handleMatrixRateLimit = async (error, retryFunction) => {
     await new Promise((resolve) => setTimeout(resolve, retryAfterMs));
 
     return retryFunction();
-};
+}
