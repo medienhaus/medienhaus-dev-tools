@@ -9,7 +9,7 @@ import React, { useState, useRef } from 'react';
 import { Parser } from '@json2csv/plainjs';
 
 import { useAuth } from '../lib/Auth';
-import { handleMatrixRateLimit } from './Utils';
+import { handleMatrixRateLimit } from '../components/Utils';
 
 const Highlight = styled.span`
   color: var(--color-hi);

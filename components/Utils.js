@@ -21,3 +21,8 @@ export const handleMatrixRateLimit = async (error, retryFunction) => {
 
     return retryFunction();
 };
+
+export const removeTrailingSlash = (string) => {
+    if (string.endsWith('/')) return string.slice(0, -1); // Remove the trailing slash
+    return string; // No trailing slash found, return the URL as is
+};

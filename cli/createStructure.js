@@ -1,6 +1,7 @@
 const process = require('node:process');
 const fs = require('fs');
 
+const { removeTrailingSlash } = require('../components/Utils');
 // Entry point of the script
 main();
 
@@ -10,7 +11,7 @@ main();
 async function main() {
     // Parse command-line arguments
     const filePath = process.argv.findIndex((i) => i === '-f') > 0 ? process.argv[process.argv.findIndex((i) => i === '-f')+1] : null;
-    const token = process.argv.findIndex((i) => i === '-t') > 0 ? process.argv[process.argv.findIndex((i) => i === '-t')+1] : null;
+    const token = process.argv.findIndex((i) => i === '-t') > 0 ? removeTrailingSlash(process.argv[process.argv.findIndex((i) => i === '-t')+1]) : null;
     const baseurl = process.argv.findIndex((i) => i === '-b') > 0 ? process.argv[process.argv.findIndex((i) => i === '-b')+1] : null;
     const homeserver = process.argv.findIndex((i) => i === '-s') > 0 ? process.argv[process.argv.findIndex((i) => i === '-s')+1] : null;
     const help = process.argv.findIndex((i) => i === '-h') > 0;
