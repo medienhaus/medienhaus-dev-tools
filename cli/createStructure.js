@@ -220,18 +220,20 @@ const createMatrixSpace = async (data, matrix) => {
 
 // Display the help message with available options
 function printOutHelp() {
-    process.stdout.write(`\
-    Options supported by the createStructure cli tool:
+    process.stdout.write(`
+Command-line arguments supported by \`node ./cli/createStructure.js\`:
+
     -f
-      path to the input file *required
+        path to the input file (required)
     -t
-      accesstoken of the matrix account to create the structure *required
+        access_token of the matrix account to create the structure (required)
     -b
-      baseurl of the matrix server (e.g. https://matrix.medienhaus.dev) *required
+        base_url of the matrix server, e.g. "https://matrix.medienhaus.dev" (required)
     -s
-      name of the homeserver (e.g. medienhaus.dev) *required
+        server_name of the matrix server, e.g. "medienhaus.dev" (required)
     -h
-      Print this help message
-    `,
+        print this help message
+
+`,
     );
 }
