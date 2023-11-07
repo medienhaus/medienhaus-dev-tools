@@ -1,10 +1,18 @@
-import process from 'node:process';
-import fs from 'fs';
-
-import { removeTrailingSlash } from '../components/Utils.js';
+const process = require('node:process');
+const fs = require('fs');
 
 // Entry point of the script
 main();
+
+/**
+ * Removes all trailing slashes from a string, if present.
+ *
+ * @param {string} string - The URL string to be checked and modified.
+ * @returns {string} - The modified URL string without trailing slashes.
+ */
+function removeTrailingSlash(string) {
+    return string.replace(/\/+$/, '');
+}
 
 /**
  * The main function that orchestrates the creation of Matrix spaces based on input data.

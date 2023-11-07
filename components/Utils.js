@@ -21,13 +21,3 @@ export async function handleMatrixRateLimit(error, retryFunction) {
 
     return retryFunction();
 }
-
-/**
- * Removes all trailing slashes from a string, if present.
- *
- * @param {string} string - The URL string to be checked and modified.
- * @returns {string} - The modified URL string without trailing slashes.
- */
-export function removeTrailingSlash(string) {
-    return string.replace(/\/+$/, '');
-}
