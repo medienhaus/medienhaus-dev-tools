@@ -17,6 +17,7 @@ const Textarea = styled.textarea`
   box-shadow: none;
   appearance: none;
 `;
+
 export default function StateEvent() {
     const [roomId, setRoomId] = useState('');
     const [stateEventName, setStateEventName] = useState('');
@@ -33,6 +34,7 @@ export default function StateEvent() {
         await matrixClient.sendStateEvent(roomId, stateEventName, JSON.parse(stateEvent))
             .catch((err) => {
                 setFeedback(err);
+
                 return;
             });
         setFeedback('succesfully sent state event!');
@@ -47,12 +49,16 @@ export default function StateEvent() {
             setValidJson(false);
             await new Promise(() => setTimeout(setFeedback(e.message), 20));
             setFeedback('');
+
             return;
         }
+
         setFeedback('');
         setValidJson(true);
+
         return true;
     };
+
     return (
         <form onSubmit={(e) => { e.preventDefault(); handleClick(); }}>
             <label>Room or Space ID</label>

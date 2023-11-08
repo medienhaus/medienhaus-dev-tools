@@ -30,7 +30,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-matrix-org": "^0.4.0",
+    "eslint-plugin-matrix-org": "^1.2.1",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.3.0",
     "stylelint": "^14.8.2",
@@ -51,10 +51,30 @@
       "browser": true
     },
     "rules": {
+      "padding-line-between-statements": [
+        "error",
+        {
+          "blankLine": "always",
+          "prev": "*",
+          "next": "return"
+        },
+        {
+          "blankLine": "always",
+          "prev": "*",
+          "next": "multiline-block-like"
+        },
+        {
+          "blankLine": "always",
+          "prev": "multiline-block-like",
+          "next": "*"
+        }
+      ],
+      "max-len": "off",
       "jsx-quotes": [
         "error",
         "prefer-double"
-      ]
+      ],
+      "import/no-named-as-default": "off"
     }
   }
 }

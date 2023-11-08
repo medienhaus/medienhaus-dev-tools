@@ -1,3 +1,4 @@
+/* eslint-disable-next-line */
 module.exports = {
     'files': ['assets/*.css', 'components/**/*.js', 'pages/**/*.js'],
     'rules': {

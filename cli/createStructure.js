@@ -31,24 +31,32 @@ async function main() {
     // Display help message and exit if the -h flag is provided
     if (help) {
         printOutHelp();
+
         return;
     }
 
     // Check if required parameters are provided
     if (!filePath) {
         process.stdout.write('filepath (-f) missing');
+
         return;
     }
+
     if (!token) {
         process.stdout.write('token (-t) missing');
+
         return;
     }
+
     if (!baseurl) {
         process.stdout.write('baseurl (-b) missing');
+
         return;
     }
+
     if (!homeserver) {
         process.stdout.write('homeserver (-s) missing');
+
         return;
     }
 
@@ -59,17 +67,21 @@ async function main() {
     };
 
     let data;
+
     // trying to read and pase input data
     try {
         const filedata = fs.readFileSync(filePath);
+
         try {
             data = await JSON.parse(filedata);
         } catch (err) {
             process.stdout.write('file not valid json');
+
             return;
         }
     } catch (err) {
         process.stdout.write('file not found');
+
         return;
     }
 
@@ -114,6 +126,7 @@ function getJsonStringFromGeneratedData(data) {
  */
 async function createSpaces(inputData, matrix) {
     const data = [];
+
     for (const entry of inputData) {
         const space = { ...entry };
         const createdSpace = await createMatrixSpace(entry, matrix)
@@ -122,6 +135,7 @@ async function createSpaces(inputData, matrix) {
         space.id = createdSpace.room_id;
         data.push(space);
     }
+
     return data;
 }
 
@@ -134,7 +148,7 @@ async function assignSpaces(data, matrix) {
     for (const primiary of data) {
         for (const primiaryParent of primiary.parentNames) {
             for (const parent of data.filter(ele => ele.name.trim().replace(' ', '') === primiaryParent.trim().replace(' ', ''))) {
-                const resp = await setSpaceAsChildToSpace(primiary.id, parent.id, matrix);
+                await setSpaceAsChildToSpace(primiary.id, parent.id, matrix);
                 await new Promise(r => setTimeout(r, 30));
             }
         }
@@ -154,6 +168,7 @@ async function setSpaceAsChildToSpace(childId, parentId, matrix) {
         suggested: false,
         auto_join: false,
     };
+
     return await fetch(matrix.baseUrl + '/_matrix/client/r0/rooms/'+parentId+'/state/m.space.child/'+childId, {
         method: 'PUT',
         headers: { Authorization: 'Bearer ' + matrix.accessToken },
@@ -232,8 +247,10 @@ const createMatrixSpace = async (data, matrix) => {
         )),
     }).catch((e) => {
     });
+
     if (req.status === 200) {
         const resp = await req.json();
+
         return resp;
     }
 };
