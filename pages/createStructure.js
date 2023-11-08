@@ -65,6 +65,7 @@ export default function CreateStructure() {
             parsedData && Array.isArray(parsedData) ? setValidData(true) : setValidData(false);
             setStructureInputData(parsedData);
         }
+
         setIsGenerating(false);
         setGeneratingStatus('');
         setGeneratedData(null);
@@ -92,6 +93,7 @@ export default function CreateStructure() {
         setIsGenerating(true);
 
         let data = [];
+
         for (const entry of structureInputData) {
             const space = { ...entry };
             const createSpace = await createMatrixSpace(entry)
@@ -103,6 +105,7 @@ export default function CreateStructure() {
             setGeneratingStatus(data.length + '/' + (structureInputData.length-1)*2);
             data.push(space);
         }
+
         data = await assignParentToChildren(data);
 
         setGeneratedData(data);
@@ -177,8 +180,10 @@ export default function CreateStructure() {
     // Function to assign parents and children relationships
     const assignParentToChildren = async (data) => {
         let processCounter = 0;
+
         for (const primiary of data) {
             primiary.parents = [];
+
             for (const primiaryParent of primiary.parentNames) {
                 for (const parent of data
                     .filter(ele => ele.name.trim().replace(' ', '') === primiaryParent.trim().replace(' ', ''))) {
@@ -188,12 +193,14 @@ export default function CreateStructure() {
                                 return handleMatrixRateLimit(error, () => addSpaceChild());
                             });
                     };
+
                     await addSpaceChild();
                     // safety timeout since synapse sometimess messes up otherwise.
                     await new Promise(r => setTimeout(r, 30));
                     primiary.parents.push(parent.id);
                 }
             }
+
             processCounter++;
             setGeneratingStatus((data.length + processCounter) + '/' + (structureInputData.length-1)*2);
         }
@@ -271,6 +278,7 @@ export default function CreateStructure() {
                 visibility: 'private', // visibility is private even for public spaces.
             };
         };
+
         return await matrixClient.createRoom(opts(
             data.type ? data.type : 'context',
             data.template,
