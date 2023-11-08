@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 import NavigationMenu from './partials/navigation';
-import LanguageChooser from './partials/languageChooser';
 
 const Wrapper = styled.div`
   min-height: 100vh;
@@ -87,13 +86,6 @@ const Nav = styled.nav`
     grid-row: 1/3;
     grid-column: 2;
     min-width: 12ch;
-  }
-`;
-
-const LanguageChooserWrapper = styled.div`
-  @media (min-width: 29em) {
-    position: fixed;
-    bottom: calc(var(--margin) * 1.4);
   }
 `;
 

@@ -33,6 +33,7 @@ export default function Leave() {
                 await new Promise(r => setTimeout(r, delay));
             }
         }
+
         if (selectedRoomType === 'all' || selectedRoomType === 'spaces') {
             for (const space of matrix.spaces.values()) {
                 if (!leaveEverything && space.name !== roomName) continue;
@@ -41,6 +42,7 @@ export default function Leave() {
                 await new Promise(r => setTimeout(r, delay));
             }
         }
+
         setDeleting(false);
     };
 
