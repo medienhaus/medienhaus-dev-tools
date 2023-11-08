@@ -12,6 +12,18 @@ const List = styled.ul`
   }
 `;
 
+/**
+ * `Navigation` is a React component for handling navigation.
+ *
+ * @component
+ * @param {Object} props - The properties passed to the component.
+ * @param {Function} props.closeNavigation - A function to close the navigation.
+ *
+ * @example
+ * <Navigation closeNavigation={closeNavigation} />
+ *
+ * @returns {React.Element} The rendered React element.
+ */
 export default function Navigation({ closeNavigation }) {
     const auth = useAuth();
 
@@ -43,6 +55,7 @@ export default function Navigation({ closeNavigation }) {
             <List>
                 <li><Link href="/leave">/Leave tool</Link></li>
                 <li><Link href="/stateEvent">/Add State Event</Link></li>
+                <li><Link href="/designStructure">/Design Structure</Link></li>
                 <li><Link href="/createStructure">/Create Structure</Link></li>
             </List>
         </>
