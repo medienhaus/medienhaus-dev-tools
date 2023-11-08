@@ -161,10 +161,14 @@ Example:
 
 1. Clone or download the repository.
 2. Install Node.js.
-3. Run the tool with your input data, access token, Matrix server URL, and homeserver name.
+3. Run the tool with your structure file, matrix base_url, matrix server_name, and access_token.
 
 ```bash
-node ./cli/createStructure.js -f ./examples/structure.example.json -t <yourAccessToken> -b <https://yourMatrixServer.tld> -s <yourHomeserverName>
+node ./cli/createStructure.js \
+  -f ./examples/structure.example.json \
+  -b https://matrix.example.org \
+  -s example.org \
+  -t syt_access_token_foo_bar_baz_etc_lorem_ipsum \
 ```
 
 4. The tool will create the nested matrix spaces based on the input data.

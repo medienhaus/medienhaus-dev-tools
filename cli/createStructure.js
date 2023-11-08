@@ -241,20 +241,37 @@ const createMatrixSpace = async (data, matrix) => {
 // Display the help message with available options
 function printOutHelp() {
     process.stdout.write(`
-Command-line arguments supported by \`node ./cli/createStructure.js\`:
+# command-line arguments (required):
 
-    -f
-        path to the input file (required)
-    -t
-        access_token of the matrix account to create the structure (required)
-    -b
-        base_url of the matrix server, e.g. "https://matrix.medienhaus.dev" (required)
-    -s
-        server_name of the matrix server, e.g. "medienhaus.dev" (required)
-    -h
-        print this help message
+    -f <structure.json>
+       path to the input file
+
+    -b <https://matrix.example.org>
+       base_url of the matrix server
+
+    -s <example.org>
+       server_name of the matrix server
+
+    -t <access_token>
+       access_token of the matrix account to create the structure
+
+# command-line flags/options:
+
     -r
-        prints out only the created rootId as an output to STDOUT instead of the full json array as an list
+       only output the created root_context_space_id
+       suppresses very verbose output of this script
+
+    -h
+       print this help message
+
+# example usage:
+
+  node ./cli/createStructure.js \\
+    -f ./structure.json \\
+    -b https://matrix.example.org \\
+    -s example.org \\
+    -t syt_access_token_foo_bar_baz_etc_lorem_ipsum \\
+    -r
 
 `,
     );
