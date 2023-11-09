@@ -1,0 +1,23 @@
+# https://github.com/vercel/next.js/blob/canary/examples/with-docker-compose/docker-compose.prod.yml
+
+version: '3'
+
+services:
+  medienhaus-dev-tools:
+    container_name: medienhaus-dev-tools
+    build:
+      context: .
+      dockerfile: prod.Dockerfile
+      #args:
+      #  ENV_VARIABLE: ${ENV_VARIABLE}
+      #  NEXT_PUBLIC_ENV_VARIABLE: ${NEXT_PUBLIC_ENV_VARIABLE}
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    #networks:
+    #  - medienhaus-dev-tools
+
+#networks:
+#  medienhaus-dev-tools:
+#    driver: bridge
+#    external: true

@@ -15,5 +15,6 @@ module.exports = {
             allowAddingNewEmails: true,
         },
     },
+    output: 'standalone',
     webpack: WebpackConfig,
 };
