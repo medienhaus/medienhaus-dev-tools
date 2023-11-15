@@ -1,0 +1,85 @@
+# --------------------------------------------------------
+# `docker-compose.yml` for medienhaus/ develop environment
+# --------------------------------------------------------
+
+services:
+
+  # ------------------------------------------------------
+  # traefik
+  # ------------------------------------------------------
+
+  traefik:
+    image: traefik:latest
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      #- "--log.level=DEBUG"
+      #- "--api.dashboard=true"
+      #- "--api.debug=true"
+      #- "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.tlschallenge=true"
+      - "--certificatesresolvers.myresolver.acme.email=${MAIL_ADDRESS}"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    #labels:
+    #  traefik.enable: "true"
+    #  #traefik.http.routers.api.entrypoints: "web"
+    #  traefik.http.routers.api.entrypoints: "websecure"
+    #  traefik.http.routers.api.tls.certresolver: "myresolver"
+    #  traefik.http.routers.api.rule: "Host(`traefik.${BASE_URL}`)"
+    #  traefik.http.routers.api.service: "api@internal"
+    ports:
+      - "80:80"
+      #- "8080:8080"
+      - "443:443"
+      #- "8443:8443"
+    volumes:
+      - ./data/letsencrypt:/letsencrypt:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  # ------------------------------------------------------
+  # medienhaus-dev-tools
+  # ------------------------------------------------------
+
+  medienhaus-dev-tools:
+    build:
+      context: .
+      dockerfile: prod.Dockerfile
+    container_name: medienhaus-dev-tools
+    restart: unless-stopped
+    depends_on:
+      - traefik
+    labels:
+      traefik.enable: "true"
+      #traefik.http.routers.medienhaus-dev-tools.entrypoints: "web"
+      traefik.http.routers.medienhaus-dev-tools.entrypoints: "websecure"
+      traefik.http.routers.medienhaus-dev-tools.tls.certresolver: "myresolver"
+      traefik.http.routers.medienhaus-dev-tools.rule: "Host(`matrix-tools.${BASE_URL}`)"
+      traefik.http.services.medienhaus-dev-tools.loadbalancer.server.port: "3000"
+    #ports:
+    #  - "3000:3000"
+
+# ------------------------------------------------------
+# networks (example)
+# ------------------------------------------------------
+
+#networks:
+#  default:
+#    name: traefik
+#    driver: bridge
+#    external: true
+
+# ------------------------------------------------------
+# volumes (example)
+# ------------------------------------------------------
+
+#volumes:
+#  medienhaus-dev-tools--node_modules:
+#    driver: local
+#  medienhaus-dev-tools--.next:
+#    driver: local
