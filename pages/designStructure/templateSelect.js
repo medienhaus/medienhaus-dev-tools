@@ -1,22 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Select from '../../components/UI/Select';
 
 /**
- * `TemplateSelect` is a React component for selecting a template from a list or creating a new one.
+ * `TemplateSelect` is a functional component that renders a select dropdown with template options.
  *
- * @component
  * @param {Object} props - The properties passed to the component.
- * @param {Array} props.templates - An array of template objects, each with a `name` and `display` property.
- * @param {Function} props.setTemplates - A function to update the `templates` state.
- * @param {Function} props.setSelectedTemplate - A function to update the selected template.
+ * @param {Array} props.templates - The templates to display in the dropdown. Each template is an object with properties that define the template.
+ * @param {Function} props.setTemplates - The function to call when the templates need to be updated. This function is passed the updated templates.
+ * @param {Function} props.setSelectedTemplate - The function to call when a template is selected. This function is passed the selected template.
+ * @param {Object} props.selectedTemplate - The currently selected template. If this prop is provided, the dropdown will be a controlled component.
  *
- * @example
- * <TemplateSelect templates={templates} setTemplates={setTemplates} setSelectedTemplate={setSelectedTemplate} />
- *
- * @returns {React.Element} The rendered React element.
+ * @returns {JSX.Element} A select dropdown element.
  */
-export default function TemplateSelect({ templates, setTemplates, setSelectedTemplate }) {
+const TemplateSelect = ({ templates, setTemplates, setSelectedTemplate, selectedTemplate }) => {
     const [createSelected, setCreateSelected] = useState(false);
     const [newTemplatePlaceholder, setNewTemplatePlaceholder] = useState('new template…');
     const [newTemplateName, setNewTemplateName] = useState('');
@@ -43,13 +40,20 @@ export default function TemplateSelect({ templates, setTemplates, setSelectedTem
         } else {
             setNewTemplatePlaceholder('already existing try another template name…');
         }
+
         // Clear the input field
         setNewTemplateName('');
     };
 
+    useEffect(() => {
+        if (selectedTemplate) {
+            setNewTemplateName(selectedTemplate);
+        }
+    }, [selectedTemplate]);
+
     return (
         <>
-            <Select setSelectedValue={handleSelect} placeholderText="template*" options={[...templates, { name: 'create', display: 'createNew…' }]} />
+            <Select selectedValue={selectedTemplate} setSelectedValue={handleSelect} placeholderText="template*" options={[...templates, { name: 'create', display: 'createNew…' }]} />
             { createSelected &&
             <>
                 <input required type="text" placeholder={newTemplatePlaceholder} onChange={handleInputChange} value={newTemplateName} />
@@ -58,4 +62,6 @@ export default function TemplateSelect({ templates, setTemplates, setSelectedTem
             }
         </>
     );
-}
+};
+
+export default TemplateSelect;

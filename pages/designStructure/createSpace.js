@@ -22,9 +22,9 @@ import ParentsSelect from './parentsSelect';
  *
  * @returns {React.Element} The rendered React element.
  */
-export default function CreateSpace({ existingEntries, modifySpaces, isEditing = false }) {
+export default function CreateSpace({ existingEntries, modifySpaces, isEditing, setIsEditing, prePopulatedData }) {
     const [name, setName] = useState('');
-    const [template, setTemplate] = useState('');
+    const [template, setTemplate] = useState('template*');
 
     const [templates, setTemplates] = useState([]);
 
@@ -56,16 +56,30 @@ export default function CreateSpace({ existingEntries, modifySpaces, isEditing =
         }
     }, [existingEntries]); // Dependency array for useEffect, triggers the effect whenever 'existingEntries' changes
 
+    useEffect(() => {
+        if (prePopulatedData) {
+            if (prePopulatedData?.name) setName(prePopulatedData?.name);
+
+            if (prePopulatedData?.template) {
+                setTemplate(prePopulatedData?.template);
+            }
+
+            if (prePopulatedData?.parentNames) setParents(prePopulatedData?.parentNames);
+        }
+    }, [prePopulatedData]);
+
     return (
         <>
+            <button onClick={() => {setIsEditing(false); reset();}}>Back</button>
             <input onChange={(e) => {setName(e?.target?.value);}} value={name} required type="text" placeholder="name" />
             <input type="text" value="context" disabled />
-            <TemplateSelect templates={templates} setTemplates={setTemplates} setSelectedTemplate={setTemplate} />
+            <TemplateSelect templates={templates} setTemplates={setTemplates} selectedTemplate={template} setSelectedTemplate={setTemplate} />
             <ParentsSelect existingEntries={existingEntries} setParents={setParents} parents={parents} />
             <button onClick={() => {
                 if (name && template) {
                     modifySpaces(name, template, parents);
                     reset();
+                    setIsEditing(false);
                 } else {
                     alert('Name and template are required');
                 }
