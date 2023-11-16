@@ -16,6 +16,7 @@ const Textarea = styled.textarea`
   border-radius: unset;
   box-shadow: none;
   appearance: none;
+  margin-bottom: var(--margin);
 `;
 
 export default function StateEvent() {
