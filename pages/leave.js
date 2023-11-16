@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 
 import { useAuth } from '../lib/Auth';
 import { useMatrix } from '../lib/Matrix';
 import { handleMatrixRateLimit } from '../components/Utils';
+
+const Checkbox = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--margin);
+`;
 
 export default function Leave() {
     const [roomName, setRoomName] = useState('');
@@ -56,11 +63,13 @@ export default function Leave() {
             </select>
             <label>Room name to leave</label><input disabled={leaveEverything} type="text" name="room-type" placeholder="Empty Room" onChange={(e) => setRoomName(e.target.value)} value={roomName} />
             <label>delay in ms between leaving each room</label><input type="text" name="delay" placeholder="delay in ms between leaving each room" onChange={(e) => setDelay(e.target.value)} value={delay} />
-            <input onChange={() => setLeaveEverything(prevState => !prevState)} type="checkbox" id="leave-all" name="leave-all" checked={leaveEverything} />
-            <label htmlFor="leave-all">Leave every room and space</label>
+            <Checkbox>
+                <label htmlFor="leave-all">Leave every room and space</label>
+                <input onChange={() => setLeaveEverything(prevState => !prevState)} type="checkbox" id="leave-all" name="leave-all" checked={leaveEverything} />
+            </Checkbox>
             <button disabled={deleting} type="submit">
                 { leaveEverything ? 'Leave everything!!' :
-                    `Leave all ${selectedRoomType !== 'all' && selectedRoomType } with the name '${ roomName }'`
+                    `Leave all ${selectedRoomType !== 'all' && selectedRoomType ? selectedRoomType : '' } with the name '${ roomName }'`
                 }
             </button>
             { numberOfDeletedRooms > 0 && <p>Left { numberOfDeletedRooms } rooms/spaces successfully!</p> }
