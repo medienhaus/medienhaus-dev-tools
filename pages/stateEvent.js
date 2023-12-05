@@ -38,7 +38,7 @@ export default function StateEvent() {
 
                 return;
             });
-        setFeedback('succesfully sent state event!');
+        setFeedback('successfully sent state event!');
         setSubmitting(false);
     };
 
