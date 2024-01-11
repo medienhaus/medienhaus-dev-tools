@@ -23,6 +23,7 @@ async function main() {
     const token = process.argv.findIndex((i) => i === '-t') > 0 ? process.argv[process.argv.findIndex((i) => i === '-t')+1] : null;
     const baseurl = process.argv.findIndex((i) => i === '-b') > 0 ? removeTrailingSlash(process.argv[process.argv.findIndex((i) => i === '-b')+1]) : null;
     const homeserver = process.argv.findIndex((i) => i === '-s') > 0 ? process.argv[process.argv.findIndex((i) => i === '-s')+1] : null;
+    const joinRule = process.argv.findIndex((i) => i === '-j') > 0 ? process.argv[process.argv.findIndex((i) => i === '-j')+1] : 'knock_restricted';
 
     const outputOnlyRootId = process.argv.findIndex((i) => i === '-r') > 0;
 
@@ -86,7 +87,7 @@ async function main() {
     }
 
     // Create spaces from the given data
-    data = await createSpaces(data, matrix);
+    data = await createSpaces(data, matrix, joinRule);
 
     // Assign spaces based on the created spaces
     await assignSpaces(data, matrix);
@@ -122,14 +123,15 @@ function getJsonStringFromGeneratedData(data) {
  * Create spaces based on input data and a matrix configuration.
  * @param {Array} inputData - Input data for creating Matrix spaces.
  * @param {Object} matrix - Object containing the matrix configuration.
+ * @param {String} joinRule - The join rule for the room. Defaults to 'knock_restricted'.
  * @returns {Array} - The created Matrix spaces data.
  */
-async function createSpaces(inputData, matrix) {
+async function createSpaces(inputData, matrix, joinRule) {
     const data = [];
 
     for (const entry of inputData) {
         const space = { ...entry };
-        const createdSpace = await createMatrixSpace(entry, matrix)
+        const createdSpace = await createMatrixSpace(entry, matrix, joinRule)
             .catch(error => {
             });
         space.id = createdSpace.room_id;
@@ -143,7 +145,7 @@ async function createSpaces(inputData, matrix) {
  * Assign spaces as child spaces to parent spaces.
  * @param {Array} data - The Matrix spaces data.
  * @param {Object} matrix - Matrix configuration.
- */
+ * */
 async function assignSpaces(data, matrix) {
     for (const primiary of data) {
         for (const primiaryParent of primiary.parentNames) {
@@ -180,9 +182,10 @@ async function setSpaceAsChildToSpace(childId, parentId, matrix) {
  * Create a Matrix space with specific configuration.
  * @param {Object} data - Data for creating the Matrix space.
  * @param {Object} matrix - Object containing the matrix configuration.
+ * @param {String} joinRule - The join rule for the room. Defaults to 'knock_restricted'.
  * @returns {Promise} - Promise representing the operation.
  */
-const createMatrixSpace = async (data, matrix) => {
+const createMatrixSpace = async (data, matrix, joinRule) => {
     const opts = (type, template, name) => {
         return {
             preset: 'public_chat',
@@ -217,6 +220,12 @@ const createMatrixSpace = async (data, matrix) => {
             initial_state: [{
                 type: 'm.room.history_visibility',
                 content: { history_visibility: 'world_readable' }, //  history
+            },
+            {
+                type: 'm.room.join_rules',
+                content: {
+                    'join_rule': joinRule,
+                },
             },
             {
                 type: 'dev.medienhaus.meta',

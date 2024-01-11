@@ -23,6 +23,8 @@ const ProcessStep = styled.section`
  * CreateStructure functional React component for Matrix space creation.
  * @function
  * @returns {JSX.Element} The CreateStructure component.
+ *
+ * @TODO needs UI for joinRule
  */
 
 export default function CreateStructure() {
@@ -40,6 +42,8 @@ export default function CreateStructure() {
     const [isGenerating, setIsGenerating] = useState(false);
 
     const [generatingStatus, setGeneratingStatus] = useState('');
+
+    const [joinRule, setJoinRule] = useState('knock_restricted');
 
     /**
      * Handles the file upload action by programmatically triggering a click event on the hidden file input element.
@@ -96,9 +100,9 @@ export default function CreateStructure() {
 
         for (const entry of structureInputData) {
             const space = { ...entry };
-            const createSpace = await createMatrixSpace(entry)
+            const createSpace = await createMatrixSpace(entry, joinRule)
                 .catch(error => {
-                    return handleMatrixRateLimit(error, () => createMatrixSpace(entry));
+                    return handleMatrixRateLimit(error, () => createMatrixSpace(entry, joinRule));
                 });
             space.id = createSpace.room_id;
 
@@ -223,9 +227,10 @@ export default function CreateStructure() {
      * Function to create a Matrix space based on provided data.
      * @function
      * @param {Object} data - The data used to create the Matrix space.
+     * @param {String} joinRule - The join rule for the room. Defaults to 'knock_restricted'.
      * @returns {Promise<Object>} A Promise that resolves with the room object of the created Matrix space.
      */
-    const createMatrixSpace = async (data) => {
+    const createMatrixSpace = async (data, joinRule) => {
         const opts = (type, template, name) => {
             return {
                 preset: 'public_chat',
@@ -259,6 +264,12 @@ export default function CreateStructure() {
                 initial_state: [{
                     type: 'm.room.history_visibility',
                     content: { history_visibility: 'world_readable' }, //  history
+                },
+                {
+                    type: 'm.room.join_rules',
+                    content: {
+                        'join_rule': joinRule,
+                    },
                 },
                 {
                     type: 'dev.medienhaus.meta',
