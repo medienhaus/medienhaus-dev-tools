@@ -43,7 +43,7 @@ export default function CreateStructure() {
 
     const [generatingStatus, setGeneratingStatus] = useState('');
 
-    const [joinRule, setJoinRule] = useState('knock_restricted');
+    const [joinRule] = useState('knock_restricted');
 
     /**
      * Handles the file upload action by programmatically triggering a click event on the hidden file input element.
