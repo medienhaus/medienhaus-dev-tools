@@ -255,7 +255,6 @@ export default function CreateStructure() {
                     users_default: 0,
                 },
                 name: name,
-                room_version: '10',
                 creation_content: { type: 'm.space' },
                 initial_state: [{
                     type: 'm.room.history_visibility',
