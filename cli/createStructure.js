@@ -133,6 +133,7 @@ async function createSpaces(inputData, matrix, joinRule) {
         const space = { ...entry };
         const createdSpace = await createMatrixSpace(entry, matrix, joinRule)
             .catch(error => {
+              console.log(error);
             });
         space.id = createdSpace.room_id;
         data.push(space);
