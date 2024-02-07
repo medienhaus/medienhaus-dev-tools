@@ -131,6 +131,7 @@ async function createSpaces(inputData, matrix) {
         const space = { ...entry };
         const createdSpace = await createMatrixSpace(entry, matrix)
             .catch(error => {
+              console.log(error);
             });
         space.id = createdSpace.room_id;
         data.push(space);
