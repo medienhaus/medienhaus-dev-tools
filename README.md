@@ -1,16 +1,20 @@
 <img src="./public/favicon.svg" width="70" />
 
-# matrix maintenance tool 🔧
+### medienhaus/
 
-Dev tool for matrix rooms and spaces.
+Customizable, modular, free and open-source environment for decentralized, distributed communication and collaboration without third-party dependencies.
+
+[Website](https://medienhaus.dev/) — [Fediverse](https://chaos.social/@medienhaus)
+
+<br>
+
+# medienhaus-dev-tools 🔧
+
+Development and maintenance tools for matrix rooms and spaces.
 
 `/leave` lets you leave every space or room with a given name. <br>
 `/space` event lets you add a state event with a given name to a given room. <br>
 `/createStructure` lets you create a nested matrix spaces tree based on a json file <br>
-
-Based on the customizable modular free and open-source environment for decentralized, distributed communication and collaboration.
-
-[Website](https://medienhaus.dev/) — [Mastodon](https://chaos.social/@medienhaus)
 
 <br>
 
