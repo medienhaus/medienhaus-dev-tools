@@ -16,8 +16,6 @@ Development and maintenance tools for matrix rooms and spaces.
 `/space` event lets you add a state event with a given name to a given room. <br>
 `/createStructure` lets you create a nested matrix spaces tree based on a json file <br>
 
-<br>
-
 ## Static Next.js React front-facing interface
 
 ### Deployment as static website
